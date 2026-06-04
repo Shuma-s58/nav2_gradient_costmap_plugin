@@ -2,6 +2,8 @@
 
 #include "pluginlib/class_list_macros.hpp"
 
+#include <cmath>
+
 namespace nav2_gradient_costmap_plugin
 {
 
@@ -30,7 +32,7 @@ void GradientLayer::updateBounds(
 }
 
 
-// main update //
+// circle wave //
 void GradientLayer::updateCosts(
   nav2_costmap_2d::Costmap2D & master_grid,
   int min_i,
@@ -41,22 +43,28 @@ void GradientLayer::updateCosts(
   unsigned char * master_array =
     master_grid.getCharMap();
 
-  int gradient_index;
+  // Costmap中央を波の中心にする
+  int cx = master_grid.getSizeInCellsX() / 2;
+  int cy = master_grid.getSizeInCellsY() / 2;
 
   for (int j = min_j; j < max_j; j++) {
-
-    gradient_index = 0;
-
     for (int i = min_i; i < max_i; i++) {
+
+      int dx = i - cx;
+      int dy = j - cy;
+
+      // 中心からの距離
+      double r = std::sqrt(
+        static_cast<double>(dx * dx + dy * dy));
+
+      // 正弦波生成
+      double wave =
+        127.0 + 127.0 * std::sin(r * 0.2);
 
       int index = master_grid.getIndex(i, j);
 
-      unsigned char cost =
-        (254 - gradient_index * 10) % 255;
-
-      gradient_index++;
-
-      master_array[index] = cost;
+      master_array[index] =
+        static_cast<unsigned char>(wave);
     }
   }
 }
