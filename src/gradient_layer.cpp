@@ -75,5 +75,5 @@ PLUGINLIB_EXPORT_CLASS(
   nav2_gradient_costmap_plugin::GradientLayer,
   nav2_costmap_2d::Layer)
 
-
+}
 
