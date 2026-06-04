@@ -1,0 +1,13 @@
+<library path="nav2_gradient_costmap_plugin_core">
+
+  <class
+      type="nav2_gradient_costmap_plugin::GradientLayer"
+      base_class_type="nav2_costmap_2d::Layer">
+
+    <description>
+      Example Gradient Layer
+    </description>
+
+  </class>
+
+</library>

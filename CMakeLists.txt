@@ -23,4 +23,45 @@ if(BUILD_TESTING)
   ament_lint_auto_find_test_dependencies()
 endif()
 
+find_package(nav2_costmap_2d REQUIRED)
+find_package(pluginlib REQUIRED)
+
+add_library(
+  nav2_gradient_costmap_plugin_core
+  SHARED
+  src/gradient_layer.cpp
+)
+
+target_include_directories(
+  nav2_gradient_costmap_plugin_core
+  PUBLIC
+  include
+)
+
+ament_target_dependencies(
+  nav2_gradient_costmap_plugin_core
+  nav2_costmap_2d
+  pluginlib
+)
+
+pluginlib_export_plugin_description_file(
+  nav2_costmap_2d
+  gradient_layer.xml
+)
+
+install(
+  TARGETS nav2_gradient_costmap_plugin_core
+  DESTINATION lib
+)
+
+install(
+  FILES gradient_layer.xml
+  DESTINATION share/${PROJECT_NAME}
+)
+
+install(
+  DIRECTORY include/
+  DESTINATION include
+)
+
 ament_package()
